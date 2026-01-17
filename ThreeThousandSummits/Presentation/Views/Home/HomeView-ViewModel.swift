@@ -28,17 +28,13 @@ extension HomeView {
         
         @Published var peaks: [Peak] = []
         @Published var selectedPeak: Peak?
+        @Published var navigationPath: [Route] = []
         
         private(set) var peakForNavigation: Peak?
         
         private(set) var searchViewUIModel: PeaksSearchView.UIModel = .init()
         let detailNavigationSubject = PassthroughSubject<Peak, Never>()
-        
-        
-        // MARK: - Private Properties
-        
-        
-        
+    
         
         // MARK: - LifeCycle
         
@@ -46,12 +42,6 @@ extension HomeView {
             handleEvents()
             getPeaks()
         }
-        
-        enum Route: Hashable {
-            case info
-        }
-        
-        @Published var navigationPath: [Route] = []
         
         
         // MARK: - Private Methods
@@ -83,10 +73,15 @@ extension HomeView {
         
         private func getPeaks() {
             Task {
-                let peaks = await getPeaksUseCase.execute()
-                
-                await MainActor.run {
-                    self.peaks = peaks
+                do {
+                    let peaks = try await getPeaksUseCase.execute()
+                    
+                    await MainActor.run {
+                        self.peaks = peaks
+                    }
+                } catch {
+                    print(error)
+                    // TODO: - Show error
                 }
             }.store(in: &disposables)
         }
@@ -101,5 +96,14 @@ extension HomeView {
                 $0.name.localizedCaseInsensitiveContains(text)
             }
         }
+    }
+}
+
+
+// MARK: - Route Extension
+
+extension HomeView.ViewModel {
+    enum Route: Hashable {
+        case info
     }
 }

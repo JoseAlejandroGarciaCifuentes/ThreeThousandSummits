@@ -24,7 +24,14 @@ struct HomeDataModule: BaseDataModule {
     
     func repositories() {
         container.register(PeaksRepository.self) { resolver in
-            PeaksRepositoryImpl()
+            PeaksRepositoryImpl(networkClient: resolver.resolve(),
+                                peakDataMapper: resolver.resolve())
+        }
+    }
+    
+    func dataMappers() {
+        container.register(PeakDataMapper.self) { resolver in
+            PeakDataMapper()
         }
     }
 }
