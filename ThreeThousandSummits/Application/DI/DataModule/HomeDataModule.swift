@@ -17,5 +17,14 @@ struct HomeDataModule: BaseDataModule {
     // MARK: - Implementation
     
     func useCases() {
+        container.register(GetPeaksUseCase.self) { resolver in
+            GetPeaksUseCaseImpl(peaksRepository: resolver.resolve())
+        }
+    }
+    
+    func repositories() {
+        container.register(PeaksRepository.self) { resolver in
+            PeaksRepositoryImpl()
+        }
     }
 }
