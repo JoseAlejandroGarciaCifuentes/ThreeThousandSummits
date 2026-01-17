@@ -12,6 +12,7 @@ class DataModule {
     static func setup(with container: Container) {
         let modules: [BaseDataModule.Type] = [
             HomeDataModule.self,
+            PeakInfoDataModule.self,
             UserDefaultsDataModule.self
         ]
         

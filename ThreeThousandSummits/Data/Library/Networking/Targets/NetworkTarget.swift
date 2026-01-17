@@ -18,12 +18,23 @@ protocol NetworkTarget {
     var method: HTTPMethod { get }
     var headers: [String: String]? { get }
     var body: Data? { get }
+    var queryItems: [URLQueryItem]? { get }
 }
 
 extension NetworkTarget {
 
     func asURLRequest() throws -> URLRequest {
-        let url = baseURL.appendingPathComponent(path)
+
+        var components = URLComponents(
+            url: baseURL.appendingPathComponent(path),
+            resolvingAgainstBaseURL: false
+        )
+
+        components?.queryItems = queryItems
+
+        guard let url = components?.url else {
+            throw URLError(.badURL)
+        }
 
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue

@@ -40,14 +40,41 @@ final class PeaksRepositoryImpl: PeaksRepository {
         
         // Response
         let data = try await networkClient.request(target)
-            .map(OverpassDTO.self)
+
+        print(String(data: data, encoding: .utf8) ?? "❌ no utf8")
+
+        let dto = try data.map(OverpassDTO.self)
         
         // Mapper
-        let peaks = peakDataMapper.mapPeaks(from: data)
+        let peaks = peakDataMapper.mapPeaks(from: dto)
         
         // Save Local
         await peakLocalProvider.set(peaks: peaks)
         
         return peaks
+    }
+    
+    func getPeakInfo(for peak: Peak) async throws -> PeakInfo? {
+        // Check Local
+        //if let localPeaks = await peakLocalProvider.getPeaks() {
+        //    return localPeaks
+        //}
+        
+        guard let lang = peak.lang, let wikiName = peak.wikiName else { return nil }
+        
+        // Request
+        let target: WikipediaTarget = .getPeak(language: lang, title: wikiName)
+        
+        // Response
+        let data = try await networkClient.request(target)
+            .map(WikipediaDTO.self)
+        
+        // Mapper
+        let peakInfo = peakDataMapper.mapPeakInfo(from: data)
+        
+        // Save Local
+        //await peakLocalProvider.set(peaks: peaks)
+        
+        return peakInfo
     }
 }
