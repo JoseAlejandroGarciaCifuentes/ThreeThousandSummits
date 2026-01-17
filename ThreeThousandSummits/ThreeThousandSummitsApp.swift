@@ -9,9 +9,17 @@ import SwiftUI
 
 @main
 struct ThreeThousandSummitsApp: App {
+    
+    // MARK: - Private Properties
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    
+    
+    // MARK: - Body
+    
     var body: some Scene {
         WindowGroup {
-            HomeView(viewModel: .init())
+            HomeView.instance()
         }
     }
 }
