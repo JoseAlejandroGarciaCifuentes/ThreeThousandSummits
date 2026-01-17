@@ -25,13 +25,21 @@ struct MapView: View {
         )
     )
 
-    @State private var selectedPeak: Peak?
+    @Binding var selectedPeak: Peak?
     
     
     // MARK: - Body
 
     var body: some View {
         content
+        
+        // MARK: - OnChange
+            .onChange(of: selectedPeak) { _, peak in
+                guard let peak else { return }
+                focus(on: peak)
+            }
+        
+        // MARK: - Sheet
             .sheet(item: $selectedPeak) { peak in
                 PeakDetailView(uiModel: .init(peak: peak))
                     .presentationDetents([.medium, .large])
@@ -57,6 +65,20 @@ struct MapView: View {
                 coordinate: peak.coordinate
             )
             .tag(peak)
+        }
+    }
+    
+    
+    // MARK: - Private Methods
+    
+    private func focus(on peak: Peak) {
+        withAnimation(.easeInOut) {
+            cameraPosition = .region(
+                MKCoordinateRegion(
+                    center: peak.coordinate,
+                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1) // 0.1 represents zoom
+                )
+            )
         }
     }
 }
