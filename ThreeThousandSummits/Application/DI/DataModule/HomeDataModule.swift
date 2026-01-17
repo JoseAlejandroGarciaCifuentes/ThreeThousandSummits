@@ -25,7 +25,8 @@ struct HomeDataModule: BaseDataModule {
     func repositories() {
         container.register(PeaksRepository.self) { resolver in
             PeaksRepositoryImpl(networkClient: resolver.resolve(),
-                                peakDataMapper: resolver.resolve())
+                                peakDataMapper: resolver.resolve(),
+                                peakLocalProvider: resolver.resolve())
         }
     }
     
@@ -33,5 +34,11 @@ struct HomeDataModule: BaseDataModule {
         container.register(PeakDataMapper.self) { resolver in
             PeakDataMapper()
         }
+    }
+    
+    func providers() {
+        container.register(PeakLocalProvider.self) { resolver in
+            PeakLocalProviderImpl(peaksUserDefaults: resolver.resolve())
+        }.inObjectScope(.container)
     }
 }
