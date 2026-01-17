@@ -55,7 +55,7 @@ struct MapView: View {
         ForEach(uiModel.peaks) { peak in
             Marker(
                 peak.name,
-                coordinate: peak.coordinate
+                coordinate: peak.coordinate.clLocationCoordinate
             )
             .tag(peak)
         }
@@ -68,7 +68,7 @@ struct MapView: View {
         withAnimation(.easeInOut) {
             cameraPosition = .region(
                 MKCoordinateRegion(
-                    center: peak.coordinate,
+                    center: peak.coordinate.clLocationCoordinate,
                     span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1) // 0.1 represents zoom
                 )
             )
