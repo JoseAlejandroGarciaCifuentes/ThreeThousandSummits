@@ -38,13 +38,6 @@ struct MapView: View {
                 guard let peak else { return }
                 focus(on: peak)
             }
-        
-        // MARK: - Sheet
-            .sheet(item: $selectedPeak) { peak in
-                PeakDetailView(uiModel: .init(peak: peak))
-                    .presentationDetents([.medium, .large])
-                    .presentationDragIndicator(.visible)
-            }
     }
     
     

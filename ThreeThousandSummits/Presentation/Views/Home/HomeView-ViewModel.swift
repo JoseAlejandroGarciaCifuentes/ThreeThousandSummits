@@ -27,8 +27,17 @@ extension HomeView {
         // MARK: - Public Properties
         
         @Published var peaks: [Peak] = []
+        @Published var selectedPeak: Peak?
+        
+        private(set) var peakForNavigation: Peak?
         
         private(set) var searchViewUIModel: PeaksSearchView.UIModel = .init()
+        let detailNavigationSubject = PassthroughSubject<Peak, Never>()
+        
+        
+        // MARK: - Private Properties
+        
+        
         
         
         // MARK: - LifeCycle
@@ -37,6 +46,12 @@ extension HomeView {
             handleEvents()
             getPeaks()
         }
+        
+        enum Route: Hashable {
+            case info
+        }
+        
+        @Published var navigationPath: [Route] = []
         
         
         // MARK: - Private Methods
@@ -49,6 +64,18 @@ extension HomeView {
                 .sink { [weak self] text in
                     guard let self else { return }
                     updateSearch(with: text)
+                }
+                .store(in: &disposables)
+            
+            detailNavigationSubject
+                .receive(on: RunLoop.main)
+                .sink { [weak self] peak in
+                    guard let self else { return }
+                    peakForNavigation = peak
+                    selectedPeak = nil
+                    DispatchQueue.main.async {
+                        self.navigationPath.append(.info)
+                    }
                 }
                 .store(in: &disposables)
             

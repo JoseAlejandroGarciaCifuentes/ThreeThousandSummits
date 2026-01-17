@@ -14,21 +14,33 @@ struct HomeView: BaseMainView {
     @ObservedObject var viewModel: Self.ViewModel
     
     
-    // MARK: - Private Properties
-    
-    @State private var selectedPeak: Peak?
-    
-    
     // MARK: - Body
     
     var body: some View {
-        MapView(uiModel: .init(peaks: viewModel.peaks), selectedPeak: $selectedPeak)
+        MapView(uiModel: .init(peaks: viewModel.peaks), selectedPeak: $viewModel.selectedPeak)
             .overlay(alignment: .top) {
-                PeaksSearchView(uiModel: viewModel.searchViewUIModel, selectedPeak: $selectedPeak)
+                PeaksSearchView(uiModel: viewModel.searchViewUIModel, selectedPeak: $viewModel.selectedPeak)
+            }
+        
+            // MARK: - Navigation
+            .withAppNavigation(path: $viewModel.navigationPath) { route in
+                switch route {
+                case .info:
+                    PeakInfoView(peak: viewModel.peakForNavigation)
+                }
+            }
+        
+        
+            // MARK: - Sheet
+            .sheet(item: $viewModel.selectedPeak) { peak in
+                PeakDetailView(uiModel: .init(peak: peak, detailNavigationSubject: viewModel.detailNavigationSubject))
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
             }
         
             // MARK: - LifeCyle
             .lifecycle(on: viewModel)
+        
     }
 }
 

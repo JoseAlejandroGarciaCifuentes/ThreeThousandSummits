@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreLocation
+import Combine
 
 struct PeakDetailView: View {
     
@@ -22,6 +23,7 @@ struct PeakDetailView: View {
             header
             Divider()
             detailInfo
+            detailButton
             Spacer()
         }
         .padding()
@@ -76,11 +78,35 @@ struct PeakDetailView: View {
         .background(.thinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
+    
+    private var detailButton: some View {
+        Button {
+            uiModel.onTapDetailButton()
+        } label: {
+            Label("More about this peak", systemImage: "info.circle.fill")
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(.blue)
+                .foregroundStyle(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+    }
 }
 
 extension PeakDetailView {
     struct UIModel {
+        
+        // MARK: - Public Properties
+        
         let peak: Peak
+        
+        
+        // MARK: - Private Properties
+        
+        let detailNavigationSubject: PassthroughSubject<Peak, Never>
+        
+        
+        // MARK: - Computed Properties
         
         var formattedCoordinates: String {
             String(
@@ -88,6 +114,13 @@ extension PeakDetailView {
                 peak.coordinate.latitude,
                 peak.coordinate.longitude
             )
+        }
+        
+        
+        // MARK: - Public Methods
+        
+        func onTapDetailButton() {
+            detailNavigationSubject.send(peak)
         }
     }
 }
