@@ -14,6 +14,10 @@ class DataModule {
             HomeDataModule.self
         ]
         
+        // Register NetworkDataModule
+        let networkDataModule = NetworkDataModule.init(container: container)
+        networkDataModule.register()
+        
         // Create and register modules
         modules.forEach { module in
             let dataModule = module.init(container: container)
