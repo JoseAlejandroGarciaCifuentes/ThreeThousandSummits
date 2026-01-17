@@ -26,10 +26,11 @@ struct HomeView: BaseMainView {
             .withAppNavigation(path: $viewModel.navigationPath) { route in
                 switch route {
                 case .info:
-                    PeakInfoView(peak: viewModel.peakForNavigation)
+                    let view = PeakInfoView.instance()
+                    view.viewModel.setup(peak: viewModel.peakForNavigation)
+                    return view
                 }
             }
-        
         
             // MARK: - Sheet
             .sheet(item: $viewModel.selectedPeak) { peak in

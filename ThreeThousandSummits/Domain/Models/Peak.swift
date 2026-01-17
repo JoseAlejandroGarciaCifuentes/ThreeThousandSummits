@@ -12,6 +12,8 @@ struct Peak: Identifiable, Hashable, Codable, Sendable {
     let name: String
     let elevation: Int
     let coordinate: Coordinate
+    let lang: String?
+    let wikiName: String?
     
     static func == (lhs: Peak, rhs: Peak) -> Bool {
         lhs.id == rhs.id

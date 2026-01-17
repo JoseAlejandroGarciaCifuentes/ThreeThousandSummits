@@ -13,7 +13,8 @@ class ViewModule {
         Container.loggingFunction = .none
         
         let modules: [BaseViewModule.Type] = [
-            HomeViewModule.self
+            HomeViewModule.self,
+            PeakInfoViewModule.self
         ]
         
         // Create and register modules

@@ -19,4 +19,6 @@ struct OverpassElementDTO: Decodable {
 struct OverpassTagsDTO: Decodable {
     let name: String?
     let ele: String?
+    let wikidata: String?
+    let wikipedia: String?
 }

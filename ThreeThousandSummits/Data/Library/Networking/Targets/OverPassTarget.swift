@@ -12,7 +12,7 @@ enum OverpassTarget {
 }
 
 extension OverpassTarget: NetworkTarget {
-
+    
     var baseURL: URL {
         URL(string: "https://overpass-api.de/api")!
     }
@@ -32,9 +32,7 @@ extension OverpassTarget: NetworkTarget {
     }
 
     var headers: [String : String]? {
-        [
-            "Content-Type": "application/x-www-form-urlencoded"
-        ]
+        ["Content-Type": "application/x-www-form-urlencoded"]
     }
 
     var body: Data? {
@@ -55,6 +53,8 @@ extension OverpassTarget: NetworkTarget {
             return bodyString.data(using: .utf8)
         }
     }
+    
+    var queryItems: [URLQueryItem]? { nil }
 }
 
 

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A519B4FE2F1B10A700C52E62 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = A519B4FD2F1B10A700C52E62 /* Swinject */; };
+		A519B6552F1C497600C52E62 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = A519B6542F1C497600C52E62 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A519B6552F1C497600C52E62 /* Kingfisher in Frameworks */,
 				A519B4FE2F1B10A700C52E62 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,6 +120,7 @@
 			name = ThreeThousandSummits;
 			packageProductDependencies = (
 				A519B4FD2F1B10A700C52E62 /* Swinject */,
+				A519B6542F1C497600C52E62 /* Kingfisher */,
 			);
 			productName = ThreeThousandSummits;
 			productReference = A519B4352F1568E000C52E62 /* ThreeThousandSummits.app */;
@@ -203,6 +206,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				A519B4FC2F1B10A700C52E62 /* XCRemoteSwiftPackageReference "Swinject" */,
+				A519B6532F1C497600C52E62 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A519B4362F1568E000C52E62 /* Products */;
@@ -597,6 +601,14 @@
 				version = 2.9.1;
 			};
 		};
+		A519B6532F1C497600C52E62 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = exactVersion;
+				version = 7.11.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -604,6 +616,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A519B4FC2F1B10A700C52E62 /* XCRemoteSwiftPackageReference "Swinject" */;
 			productName = Swinject;
+		};
+		A519B6542F1C497600C52E62 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A519B6532F1C497600C52E62 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
