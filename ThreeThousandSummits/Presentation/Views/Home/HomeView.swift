@@ -25,6 +25,9 @@ struct HomeView: BaseMainView {
             // MARK: - Loader
             .loadingOverlay(isLoading: viewModel.isLoading)
         
+            // MARK: - Alert
+            .errorAlert(isPresented: $viewModel.showErrorAlert, onSubmit: viewModel.getPeaks)
+        
             // MARK: - Navigation
             .withAppNavigation(path: $viewModel.navigationPath) { route in
                 switch route {
@@ -34,6 +37,7 @@ struct HomeView: BaseMainView {
                     return view
                 }
             }
+            
         
             // MARK: - Sheet
             .sheet(item: $viewModel.selectedPeak) { peak in

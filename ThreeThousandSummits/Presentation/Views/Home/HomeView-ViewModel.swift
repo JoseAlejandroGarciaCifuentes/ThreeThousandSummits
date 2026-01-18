@@ -30,6 +30,8 @@ extension HomeView {
         @Published var selectedPeak: Peak?
         @Published var navigationPath: [Route] = []
         
+        @Published var showErrorAlert: Bool = false
+        
         private(set) var peakForNavigation: Peak?
         
         private(set) var searchViewUIModel: PeaksSearchView.UIModel = .init()
@@ -78,7 +80,7 @@ extension HomeView {
             
         }
         
-        private func getPeaks() {
+        func getPeaks() {
             getPeaksTask?.cancel()
             
             getPeaksTask = Task(loadable: self) {
@@ -91,8 +93,9 @@ extension HomeView {
                     }
                 } catch is CancellationError {
                 } catch {
-                    print(error)
-                    // TODO: - Show error
+                    await MainActor.run {
+                        self.showErrorAlert = true
+                    }
                 }
             }
         }
