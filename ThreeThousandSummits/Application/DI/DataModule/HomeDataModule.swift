@@ -20,6 +20,10 @@ struct HomeDataModule: BaseDataModule {
         container.register(GetPeaksUseCase.self) { resolver in
             GetPeaksUseCaseImpl(peaksRepository: resolver.resolve())
         }
+        
+        container.register(SearchPeaksUseCase.self) { resolver in
+            SearchPeaksUseCaseImpl()
+        }
     }
     
     func repositories() {
