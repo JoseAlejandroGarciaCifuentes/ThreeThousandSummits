@@ -33,7 +33,7 @@ struct MapView: View {
     var body: some View {
         content
         
-        // MARK: - OnChange
+            // MARK: - OnChange
             .onChange(of: selectedPeak) { _, peak in
                 guard let peak else { return }
                 focus(on: peak)

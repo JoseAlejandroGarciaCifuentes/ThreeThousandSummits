@@ -66,7 +66,7 @@ struct HomeView: BaseMainView {
                 .font(.system(size: 20, weight: .bold))
                 .foregroundStyle(.white)
                 .padding(16)
-                .background(.blue)
+                .background(.gray)
                 .clipShape(Circle())
                 .shadow(radius: 4)
         }

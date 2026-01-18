@@ -5,8 +5,6 @@
 //  Created by Alejandro Personal on 17/1/26.
 //
 
-import CoreLocation // temporary
-
 final class PeaksRepositoryImpl: PeaksRepository {
     
     // MARK: - Dependencies

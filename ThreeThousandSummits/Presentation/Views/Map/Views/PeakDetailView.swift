@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CoreLocation
 import Combine
 
 struct PeakDetailView: View {
@@ -95,10 +94,7 @@ extension PeakDetailView {
         let elevation: Int
         let coordinates: String
         
-        
-        // MARK: - Private Properties
-        
-        let detailNavigationSubject: PassthroughSubject<Int, Never>
+        private(set) var detailNavigationSubject: PassthroughSubject<Int, Never>
         
         
         // MARK: - Public Methods
