@@ -34,9 +34,22 @@
 		A519B44C2F1568E200C52E62 /* ThreeThousandSummitsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThreeThousandSummitsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A52E60822F1D23290029ED7F /* Exceptions for "ThreeThousandSummits" folder in "ThreeThousandSummits" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				README.md,
+			);
+			target = A519B4342F1568E000C52E62 /* ThreeThousandSummits */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A519B4372F1568E000C52E62 /* ThreeThousandSummits */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A52E60822F1D23290029ED7F /* Exceptions for "ThreeThousandSummits" folder in "ThreeThousandSummits" target */,
+			);
 			path = ThreeThousandSummits;
 			sourceTree = "<group>";
 		};
