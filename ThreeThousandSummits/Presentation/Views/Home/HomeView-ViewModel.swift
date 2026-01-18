@@ -17,14 +17,18 @@ extension HomeView {
         private let getPeaksUseCase: GetPeaksUseCase
         
         // UIMappers
+        private let peakUIMapper: PeakUIMapper
         private let searchUIMapper: SearchUIMapper
         
         
         // MARK: - Init
         
         init(getPeaksUseCase: GetPeaksUseCase,
+             peakUIMapper: PeakUIMapper,
              searchUIMapper: SearchUIMapper) {
             self.getPeaksUseCase = getPeaksUseCase
+            
+            self.peakUIMapper = peakUIMapper
             self.searchUIMapper = searchUIMapper
         }
         
@@ -44,7 +48,7 @@ extension HomeView {
         private(set) var searchViewUIModel: SearchView.UIModel = .init(textFieldPlaceholder: "Find Peak…")
         
         // Publishers
-        let detailNavigationSubject = PassthroughSubject<Peak, Never>()
+        let detailNavigationSubject = PassthroughSubject<Int, Never>()
         
         // Task
         private var getPeaksTask: Task<Void, Error>?
@@ -62,6 +66,32 @@ extension HomeView {
             getPeaksTask?.cancel()
         }
         
+        
+        // MARK: - Public Methods
+        
+        func getPeaks(forceUpdate: Bool = false) {
+            getPeaksTask?.cancel()
+            
+            getPeaksTask = Task(loadable: self) {
+                do {
+                    let peaks = try await getPeaksUseCase.execute(forceUpdate: forceUpdate)
+                    try Task.checkCancellation()
+                    
+                    await MainActor.run {
+                        self.peaks = peaks
+                    }
+                } catch is CancellationError {
+                } catch {
+                    await MainActor.run {
+                        self.showErrorAlert = true
+                    }
+                }
+            }
+        }
+        
+        func getPeakDetailViewUIModel(from peak: Peak) -> PeakDetailView.UIModel {
+            return peakUIMapper.mapPeakDetailUIModel(from: peak, detailNavigationSubject: detailNavigationSubject)
+        }
         
         // MARK: - Private Methods
         
@@ -86,8 +116,9 @@ extension HomeView {
             
             detailNavigationSubject
                 .receive(on: RunLoop.main)
-                .sink { [weak self] peak in
+                .sink { [weak self] peakId in
                     guard let self else { return }
+                    let peak = peaks.first { $0.id == peakId }
                     peakForNavigation = peak
                     selectedPeak = nil
                     searchSelectedId = nil
@@ -97,26 +128,6 @@ extension HomeView {
                 }
                 .store(in: &disposables)
             
-        }
-        
-        func getPeaks(forceUpdate: Bool = false) {
-            getPeaksTask?.cancel()
-            
-            getPeaksTask = Task(loadable: self) {
-                do {
-                    let peaks = try await getPeaksUseCase.execute(forceUpdate: forceUpdate)
-                    try Task.checkCancellation()
-                    
-                    await MainActor.run {
-                        self.peaks = peaks
-                    }
-                } catch is CancellationError {
-                } catch {
-                    await MainActor.run {
-                        self.showErrorAlert = true
-                    }
-                }
-            }
         }
         
         private func updateSearch(with text: String) {

@@ -45,7 +45,7 @@ struct HomeView: BaseMainView {
         
             // MARK: - Sheet
             .sheet(item: $viewModel.selectedPeak) { peak in
-                PeakDetailView(uiModel: .init(peak: peak, detailNavigationSubject: viewModel.detailNavigationSubject))
+                PeakDetailView(uiModel: viewModel.getPeakDetailViewUIModel(from: peak))
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             }

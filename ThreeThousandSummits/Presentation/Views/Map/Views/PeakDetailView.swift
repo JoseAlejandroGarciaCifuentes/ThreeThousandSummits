@@ -38,11 +38,11 @@ struct PeakDetailView: View {
                 .font(.system(size: 48))
                 .foregroundStyle(.brown)
 
-            Text(uiModel.peak.name)
+            Text(uiModel.name)
                 .font(.title2)
                 .fontWeight(.semibold)
 
-            Text("\(uiModel.peak.elevation) m")
+            Text("\(uiModel.elevation) m")
                 .font(.headline)
                 .foregroundStyle(.secondary)
         }
@@ -50,17 +50,9 @@ struct PeakDetailView: View {
     
     private var detailInfo: some View {
         VStack(spacing: 12) {
-            infoRow(
-                title: "Height",
-                value: "\(uiModel.peak.elevation) meters",
-                icon: "arrow.up"
-            )
+            infoRow(title: "Height", value: "\(uiModel.elevation) meters", icon: "arrow.up")
 
-            infoRow(
-                title: "Coordinates",
-                value: uiModel.formattedCoordinates,
-                icon: "location.fill"
-            )
+            infoRow(title: "Coordinates", value: uiModel.coordinates, icon: "location.fill")
         }
     }
     
@@ -98,29 +90,21 @@ extension PeakDetailView {
         
         // MARK: - Public Properties
         
-        let peak: Peak
+        let id: Int
+        let name: String
+        let elevation: Int
+        let coordinates: String
         
         
         // MARK: - Private Properties
         
-        let detailNavigationSubject: PassthroughSubject<Peak, Never>
-        
-        
-        // MARK: - Computed Properties
-        
-        var formattedCoordinates: String {
-            String(
-                format: "%.4f, %.4f",
-                peak.coordinate.latitude,
-                peak.coordinate.longitude
-            )
-        }
+        let detailNavigationSubject: PassthroughSubject<Int, Never>
         
         
         // MARK: - Public Methods
         
         func onTapDetailButton() {
-            detailNavigationSubject.send(peak)
+            detailNavigationSubject.send(id)
         }
     }
 }
