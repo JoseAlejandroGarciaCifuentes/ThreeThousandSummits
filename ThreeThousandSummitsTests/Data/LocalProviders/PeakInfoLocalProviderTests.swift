@@ -14,12 +14,10 @@ struct PeakInfoLocalProviderTests {
     func returnsCachedInfo_whenCacheIsValid() async {
         let sut = await PeakInfoLocalProviderImpl()
 
-        let info = PeakInfo(
-            id: 1,
-            title: "Pic Long",
-            description: "Peak",
-            imageURL: nil
-        )
+        let info = PeakInfo(id: 1,
+                            title: "Pic Long",
+                            description: "Peak",
+                            imageURL: nil)
 
         await sut.setPeakInfo(info, for: "key")
 

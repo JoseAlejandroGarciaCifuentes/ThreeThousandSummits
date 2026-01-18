@@ -25,33 +25,23 @@ final class PeakUIMapperMock: PeakUIMapper {
         let imageURL = peakInfo?.imageURL
             .flatMap { URL(string: $0.trimmingCharacters(in: .whitespacesAndNewlines)) }
 
-        return PeakInfoUIModel(
-            name: peak.name,
-            elevation: peak.elevation,
-            description: peakInfo?.description,
-            imageUrl: imageURL
-        )
+        return PeakInfoUIModel(name: peak.name,
+                               elevation: peak.elevation,
+                               description: peakInfo?.description,
+                               imageUrl: imageURL)
     }
 
     // MARK: - PeakDetail
 
-    func mapPeakDetailUIModel(
-        from peak: Peak,
-        detailNavigationSubject: PassthroughSubject<Int, Never>
-    ) -> PeakDetailView.UIModel {
+    func mapPeakDetailUIModel(from peak: Peak,
+                              detailNavigationSubject: PassthroughSubject<Int, Never>) -> PeakDetailView.UIModel {
 
-        let formattedCoordinates = String(
-            format: "%.4f, %.4f",
-            peak.coordinate.latitude,
-            peak.coordinate.longitude
-        )
+        let formattedCoordinates = String(format: "%.4f, %.4f", peak.coordinate.latitude, peak.coordinate.longitude)
 
-        return PeakDetailView.UIModel(
-            id: peak.id,
-            name: peak.name,
-            elevation: peak.elevation,
-            coordinates: formattedCoordinates,
-            detailNavigationSubject: detailNavigationSubject
-        )
+        return PeakDetailView.UIModel(id: peak.id,
+                                      name: peak.name,
+                                      elevation: peak.elevation,
+                                      coordinates: formattedCoordinates,
+                                      detailNavigationSubject: detailNavigationSubject)
     }
 }

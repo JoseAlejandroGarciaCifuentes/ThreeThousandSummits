@@ -17,11 +17,9 @@ final class SearchUIMapperMock: SearchUIMapper {
     }
 
     func map(_ peak: Peak) -> SearchUIModel {
-        SearchUIModel(
-            id: peak.id,
-            name: peak.name,
-            icon: "mountain.2.fill",
-            elevation: peak.elevation
-        )
+        SearchUIModel(id: peak.id,
+                      name: peak.name,
+                      icon: "mountain.2.fill",
+                      elevation: peak.elevation)
     }
 }
