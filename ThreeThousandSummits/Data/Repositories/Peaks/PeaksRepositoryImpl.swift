@@ -5,8 +5,6 @@
 //  Created by Alejandro Personal on 17/1/26.
 //
 
-import CoreLocation // temporary
-
 final class PeaksRepositoryImpl: PeaksRepository {
     
     // MARK: - Dependencies
@@ -32,9 +30,9 @@ final class PeaksRepositoryImpl: PeaksRepository {
     
     // MARK: - Implementation
     
-    func getPeaks() async throws -> [Peak] {
+    func getPeaks(forceUpdate: Bool) async throws -> [Peak] {
         // Check Local
-        if let localPeaks = await peakLocalProvider.getPeaks() {
+        if !forceUpdate, let localPeaks = await peakLocalProvider.getPeaks() {
             return localPeaks
         }
         

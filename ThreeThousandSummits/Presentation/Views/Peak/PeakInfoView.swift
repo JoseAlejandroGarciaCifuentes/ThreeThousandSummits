@@ -43,7 +43,7 @@ struct PeakInfoView: BaseMainView {
     
     private var header: some View {
         VStack(spacing: 20) {
-            if let urlString = viewModel.peakInfo?.imageURL, let url = URL(string: urlString) {
+            if let url = viewModel.peakInfoUIModel?.imageUrl {
                 KFImage(url)
                     .resizable()
                     .scaledToFill()
@@ -52,13 +52,13 @@ struct PeakInfoView: BaseMainView {
                     .clipped()
             }
             
-            Text(viewModel.peak?.name ?? "")
+            Text(viewModel.peakInfoUIModel?.name ?? "")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding(.horizontal)
                 .multilineTextAlignment(.center)
             
-            Text("\(viewModel.peak?.elevation ?? 0) m")
+            Text("\(viewModel.peakInfoUIModel?.elevation ?? 0) m")
                 .font(.title3)
                 .foregroundStyle(.secondary)
         }
@@ -69,7 +69,7 @@ struct PeakInfoView: BaseMainView {
             Text("About this peak")
                 .font(.headline)
 
-            Text(viewModel.peakInfo?.description ?? "")
+            Text(viewModel.peakInfoUIModel?.description ?? "")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal)

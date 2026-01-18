@@ -19,7 +19,19 @@ struct HomeViewModule: BaseViewModule {
     
     func viewModels() {
         container.register(HomeView.ViewModel.self) { resolver in
-            HomeView.ViewModel(getPeaksUseCase: resolver.resolve())
+            HomeView.ViewModel(getPeaksUseCase: resolver.resolve(),
+                               peakUIMapper: resolver.resolve(),
+                               searchUIMapper: resolver.resolve())
+        }
+    }
+    
+    func uiMappers() {
+        container.register(PeakUIMapper.self) { resolver in
+            PeakUIMapper()
+        }
+        
+        container.register(SearchUIMapper.self) { resolver in
+            SearchUIMapper()
         }
     }
 }

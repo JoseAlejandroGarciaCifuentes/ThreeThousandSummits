@@ -35,7 +35,6 @@ class BaseUIModel: Loadable {
     
     // MARK: - Lifecycle
     
-    open func onFirstAppear() {}
     open func onAppear() {}
     open func onDisappear() {}
     

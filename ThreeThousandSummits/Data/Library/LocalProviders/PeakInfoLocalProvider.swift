@@ -17,7 +17,7 @@ final actor PeakInfoLocalProviderImpl: PeakInfoLocalProvider {
     // MARK: - Private Properties
     
     private var storage: [String: CacheEntry] = [:]
-    private let ttl: TimeInterval = 40
+    private let ttl: TimeInterval = 180
 
     
     // MARK: - Public Methods

@@ -16,11 +16,20 @@ extension HomeView {
         // UseCases
         private let getPeaksUseCase: GetPeaksUseCase
         
+        // UIMappers
+        private let peakUIMapper: PeakUIMapper
+        private let searchUIMapper: SearchUIMapper
+        
         
         // MARK: - Init
         
-        init(getPeaksUseCase: GetPeaksUseCase) {
+        init(getPeaksUseCase: GetPeaksUseCase,
+             peakUIMapper: PeakUIMapper,
+             searchUIMapper: SearchUIMapper) {
             self.getPeaksUseCase = getPeaksUseCase
+            
+            self.peakUIMapper = peakUIMapper
+            self.searchUIMapper = searchUIMapper
         }
         
         
@@ -30,11 +39,18 @@ extension HomeView {
         @Published var selectedPeak: Peak?
         @Published var navigationPath: [Route] = []
         
+        @Published var searchSelectedId: Int?
+        
+        @Published var showErrorAlert: Bool = false
+        
         private(set) var peakForNavigation: Peak?
         
-        private(set) var searchViewUIModel: PeaksSearchView.UIModel = .init()
-        let detailNavigationSubject = PassthroughSubject<Peak, Never>()
+        private(set) var searchViewUIModel: SearchView.UIModel = .init(textFieldPlaceholder: "Find Peak…")
         
+        // Publishers
+        let detailNavigationSubject = PassthroughSubject<Int, Never>()
+        
+        // Task
         private var getPeaksTask: Task<Void, Error>?
     
         
@@ -51,6 +67,32 @@ extension HomeView {
         }
         
         
+        // MARK: - Public Methods
+        
+        func getPeaks(forceUpdate: Bool = false) {
+            getPeaksTask?.cancel()
+            
+            getPeaksTask = Task(loadable: self) {
+                do {
+                    let peaks = try await getPeaksUseCase.execute(forceUpdate: forceUpdate)
+                    try Task.checkCancellation()
+                    
+                    await MainActor.run {
+                        self.peaks = peaks
+                    }
+                } catch is CancellationError {
+                } catch {
+                    await MainActor.run {
+                        self.showErrorAlert = true
+                    }
+                }
+            }
+        }
+        
+        func getPeakDetailViewUIModel(from peak: Peak) -> PeakDetailView.UIModel {
+            return peakUIMapper.mapPeakDetailUIModel(from: peak, detailNavigationSubject: detailNavigationSubject)
+        }
+        
         // MARK: - Private Methods
         
         private func handleEvents() {
@@ -64,12 +106,22 @@ extension HomeView {
                 }
                 .store(in: &disposables)
             
+            $searchSelectedId
+                .receive(on: RunLoop.main)
+                .sink { [weak self] id in
+                    guard let self else { return }
+                    selectedPeak = peaks.first { $0.id == id }
+                }
+                .store(in: &disposables)
+            
             detailNavigationSubject
                 .receive(on: RunLoop.main)
-                .sink { [weak self] peak in
+                .sink { [weak self] peakId in
                     guard let self else { return }
+                    let peak = peaks.first { $0.id == peakId }
                     peakForNavigation = peak
                     selectedPeak = nil
+                    searchSelectedId = nil
                     DispatchQueue.main.async {
                         self.navigationPath.append(.info)
                     }
@@ -78,34 +130,17 @@ extension HomeView {
             
         }
         
-        private func getPeaks() {
-            getPeaksTask?.cancel()
-            
-            getPeaksTask = Task(loadable: self) {
-                do {
-                    let peaks = try await getPeaksUseCase.execute()
-                    try Task.checkCancellation()
-                    
-                    await MainActor.run {
-                        self.peaks = peaks
-                    }
-                } catch is CancellationError {
-                } catch {
-                    print(error)
-                    // TODO: - Show error
-                }
-            }
-        }
-        
         private func updateSearch(with text: String) {
             guard !text.isEmpty else {
-                searchViewUIModel.filteredPeaks = peaks
+                searchViewUIModel.filteredSuggestionUIModel = searchUIMapper.mapPeakSearchSuggestionUIModel(from: peaks)
                 return
             }
 
-            searchViewUIModel.filteredPeaks = peaks.filter {
+            let filteredPeaks = peaks.filter {
                 $0.name.localizedCaseInsensitiveContains(text)
             }
+            
+            searchViewUIModel.filteredSuggestionUIModel = searchUIMapper.mapPeakSearchSuggestionUIModel(from: filteredPeaks)
         }
     }
 }
