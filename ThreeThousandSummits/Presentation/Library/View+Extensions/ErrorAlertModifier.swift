@@ -9,9 +9,14 @@ import SwiftUI
 
 struct ErrorAlertModifier: ViewModifier {
 
+    // MARK: - Public Properties
+    
     @Binding var isPresented: Bool
     let onSubmit: () -> Void
 
+    
+    // MARK: - Body
+    
     func body(content: Content) -> some View {
         content
             .alert(
@@ -27,6 +32,8 @@ struct ErrorAlertModifier: ViewModifier {
             }
     }
 }
+
+// MARK: - View Extension
 
 extension View {
     func errorAlert(isPresented: Binding<Bool>, onSubmit: @escaping () -> Void) -> some View {

@@ -1,5 +1,5 @@
 //
-//  Array+SafeSubscript.swift
+//  Array+Safe.swift
 //  ThreeThousandSummits
 //
 //  Created by Alejandro Personal on 17/1/26.

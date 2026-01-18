@@ -50,7 +50,6 @@ struct PeakDetailView: View {
     private var detailInfo: some View {
         VStack(spacing: 12) {
             infoRow(title: "Height", value: "\(uiModel.elevation) meters", icon: "arrow.up")
-
             infoRow(title: "Coordinates", value: uiModel.coordinates, icon: "location.fill")
         }
     }
@@ -83,6 +82,9 @@ struct PeakDetailView: View {
         }
     }
 }
+
+
+// MARK: - UIModel
 
 extension PeakDetailView {
     struct UIModel {

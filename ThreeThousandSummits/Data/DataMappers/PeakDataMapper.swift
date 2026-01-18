@@ -5,14 +5,14 @@
 //  Created by Alejandro Personal on 17/1/26.
 //
 
-import CoreLocation
-
 protocol PeakDataMapper {
     func mapPeaks(from response: OverpassDTO) -> [Peak]
     func mapPeakInfo(from response: WikipediaDTO) -> PeakInfo?
 }
 
 final class PeakDataMapperImpl: PeakDataMapper {
+    
+    // MARK: - Public Methods
     
     func mapPeaks(from response: OverpassDTO) -> [Peak] {
         return response.elements?.compactMap { mapEntity(from: $0) } ?? []
@@ -28,6 +28,9 @@ final class PeakDataMapperImpl: PeakDataMapper {
                         description: peakDetail.extract,
                         imageURL: peakDetail.original?.source)
     }
+    
+    
+    // MARK: - Private Methods
     
     private func mapEntity(from response: OverpassElementDTO) -> Peak? {
         guard let id = response.id,
