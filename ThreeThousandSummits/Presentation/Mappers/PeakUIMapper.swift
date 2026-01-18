@@ -8,7 +8,12 @@
 import Foundation
 import Combine
 
-struct PeakUIMapper {
+protocol PeakUIMapper {
+    func mapPeakInfoUIModel(from peakInfo: PeakInfo?, and peak: Peak) -> PeakInfoUIModel?
+    func mapPeakDetailUIModel(from peak: Peak, detailNavigationSubject: PassthroughSubject<Int, Never>) -> PeakDetailView.UIModel
+}
+
+struct PeakUIMapperImpl: PeakUIMapper {
     
     func mapPeakInfoUIModel(from peakInfo: PeakInfo?, and peak: Peak) -> PeakInfoUIModel? {
         let imageURL = peakInfo?.imageURL

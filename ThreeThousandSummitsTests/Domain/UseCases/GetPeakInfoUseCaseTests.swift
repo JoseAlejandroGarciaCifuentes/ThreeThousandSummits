@@ -15,6 +15,7 @@ struct GetPeakInfoUseCaseTests {
     let peaksRepository: PeaksRepositoryMock
     let sut: GetPeakInfoUseCaseImpl
 
+    
     // MARK: - Init
 
     init() {
@@ -22,6 +23,7 @@ struct GetPeakInfoUseCaseTests {
         self.sut = GetPeakInfoUseCaseImpl(peaksRepository: peaksRepository)
     }
 
+    
     // MARK: - Testing
 
     @Test

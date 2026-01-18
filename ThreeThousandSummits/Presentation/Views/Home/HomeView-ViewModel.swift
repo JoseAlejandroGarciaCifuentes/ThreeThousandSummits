@@ -15,6 +15,7 @@ extension HomeView {
         
         // UseCases
         private let getPeaksUseCase: GetPeaksUseCase
+        private let searchPeaksUseCase: SearchPeaksUseCase
         
         // UIMappers
         private let peakUIMapper: PeakUIMapper
@@ -24,9 +25,11 @@ extension HomeView {
         // MARK: - Init
         
         init(getPeaksUseCase: GetPeaksUseCase,
+             searchPeaksUseCase: SearchPeaksUseCase,
              peakUIMapper: PeakUIMapper,
              searchUIMapper: SearchUIMapper) {
             self.getPeaksUseCase = getPeaksUseCase
+            self.searchPeaksUseCase = searchPeaksUseCase
             
             self.peakUIMapper = peakUIMapper
             self.searchUIMapper = searchUIMapper
@@ -131,15 +134,7 @@ extension HomeView {
         }
         
         private func updateSearch(with text: String) {
-            guard !text.isEmpty else {
-                searchViewUIModel.filteredSuggestionUIModel = searchUIMapper.mapPeakSearchSuggestionUIModel(from: peaks)
-                return
-            }
-
-            let filteredPeaks = peaks.filter {
-                $0.name.localizedCaseInsensitiveContains(text)
-            }
-            
+            let filteredPeaks = searchPeaksUseCase.execute(peaks: peaks, query: text)
             searchViewUIModel.filteredSuggestionUIModel = searchUIMapper.mapPeakSearchSuggestionUIModel(from: filteredPeaks)
         }
     }

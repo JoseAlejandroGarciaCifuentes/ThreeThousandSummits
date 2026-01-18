@@ -39,7 +39,7 @@ struct GetPeaksUseCaseTests {
         peaksRepository.getPeaksResult = .success(peaks)
 
         // When
-        let result = try await sut.execute()
+        let result = try await sut.execute(forceUpdate: true)
 
         // Then
         #expect(peaksRepository.getPeaksCalled)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PeakSearchUIModel: Identifiable {
+struct SearchUIModel: Identifiable {
     let uuid = UUID()
     let id: Int
     let name: String

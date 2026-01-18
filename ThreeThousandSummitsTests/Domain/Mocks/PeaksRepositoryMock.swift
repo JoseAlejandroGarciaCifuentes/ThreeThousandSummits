@@ -19,7 +19,7 @@ final class PeaksRepositoryMock: PeaksRepository {
 
     // MARK: - Implementation
 
-    func getPeaks() async throws -> [Peak] {
+    func getPeaks(forceUpdate: Bool) async throws -> [Peak] {
         getPeaksCalled = true
 
         guard let getPeaksResult else {
