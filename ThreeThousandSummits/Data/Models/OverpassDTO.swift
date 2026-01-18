@@ -5,18 +5,18 @@
 //  Created by Alejandro Personal on 17/1/26.
 //
 
-struct OverpassDTO: Decodable {
+struct OverpassDTO: Codable {
     let elements: [OverpassElementDTO]?
 }
 
-struct OverpassElementDTO: Decodable {
+struct OverpassElementDTO: Codable {
     let id: Int?
     let lat: Double?
     let lon: Double?
     let tags: OverpassTagsDTO?
 }
 
-struct OverpassTagsDTO: Decodable {
+struct OverpassTagsDTO: Codable {
     let name: String?
     let ele: String?
     let wikidata: String?
