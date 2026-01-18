@@ -80,12 +80,12 @@ extension HomeView {
             
         }
         
-        func getPeaks() {
+        func getPeaks(forceUpdate: Bool = false) {
             getPeaksTask?.cancel()
             
             getPeaksTask = Task(loadable: self) {
                 do {
-                    let peaks = try await getPeaksUseCase.execute()
+                    let peaks = try await getPeaksUseCase.execute(forceUpdate: forceUpdate)
                     try Task.checkCancellation()
                     
                     await MainActor.run {
