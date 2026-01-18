@@ -32,24 +32,12 @@
 		A519B4352F1568E000C52E62 /* ThreeThousandSummits.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThreeThousandSummits.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A519B4422F1568E200C52E62 /* ThreeThousandSummitsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThreeThousandSummitsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A519B44C2F1568E200C52E62 /* ThreeThousandSummitsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThreeThousandSummitsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A52E61A92F1D29E50029ED7F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		A52E60822F1D23290029ED7F /* Exceptions for "ThreeThousandSummits" folder in "ThreeThousandSummits" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				README.md,
-			);
-			target = A519B4342F1568E000C52E62 /* ThreeThousandSummits */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A519B4372F1568E000C52E62 /* ThreeThousandSummits */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				A52E60822F1D23290029ED7F /* Exceptions for "ThreeThousandSummits" folder in "ThreeThousandSummits" target */,
-			);
 			path = ThreeThousandSummits;
 			sourceTree = "<group>";
 		};
@@ -99,6 +87,7 @@
 				A519B4452F1568E200C52E62 /* ThreeThousandSummitsTests */,
 				A519B44F2F1568E200C52E62 /* ThreeThousandSummitsUITests */,
 				A519B4362F1568E000C52E62 /* Products */,
+				A52E61A92F1D29E50029ED7F /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
