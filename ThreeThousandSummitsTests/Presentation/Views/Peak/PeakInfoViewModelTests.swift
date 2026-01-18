@@ -24,10 +24,8 @@ struct PeakInfoViewModelTests {
         self.getPeakInfoUseCase = GetPeakInfoUseCaseMock()
         self.peakUIMapper = PeakUIMapperMock()
 
-        self.sut = PeakInfoView.ViewModel(
-            getPeakInfoUseCase: getPeakInfoUseCase,
-            peakUIMapper: peakUIMapper
-        )
+        self.sut = PeakInfoView.ViewModel(getPeakInfoUseCase: getPeakInfoUseCase,
+                                          peakUIMapper: peakUIMapper)
     }
 
     
