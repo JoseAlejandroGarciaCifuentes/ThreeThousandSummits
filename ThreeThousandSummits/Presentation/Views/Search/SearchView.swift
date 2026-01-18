@@ -1,5 +1,5 @@
 //
-//  PeaksSearchView.swift
+//  SearchView.swift
 //  ThreeThousandSummits
 //
 //  Created by Alejandro Personal on 16/1/26.
@@ -8,12 +8,12 @@
 import SwiftUI
 import Combine
 
-struct PeaksSearchView: View {
+struct SearchView: View {
 
     // MARK: - Public Properties
     
     @ObservedObject var uiModel: Self.UIModel
-    @Binding var selectedPeak: Peak?
+    @Binding var selectedId: Int?
     
     
     // MARK: - Private Properties
@@ -38,7 +38,7 @@ struct PeaksSearchView: View {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(.secondary)
 
-            TextField("Find Peak…", text: $uiModel.searchText)
+            TextField(uiModel.textFieldPlaceholder, text: $uiModel.searchText)
                 .textInputAutocapitalization(.words)
                 .disableAutocorrection(true)
         }
@@ -52,7 +52,7 @@ struct PeaksSearchView: View {
         if !uiModel.searchText.isEmpty {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 0) {
-                    ForEach(uiModel.filteredPeaks.prefix(6)) { peak in
+                    ForEach(uiModel.filteredSuggestionUIModel.prefix(6)) { peak in
                         suggestionButton(with: peak)
                         Divider()
                     }
@@ -66,16 +66,16 @@ struct PeaksSearchView: View {
         }
     }
     
-    private func suggestionButton(with peak: Peak) -> some View {
+    private func suggestionButton(with suggestion: PeakSearchUIModel) -> some View {
         Button {
-            selectedPeak = peak
+            selectedId = suggestion.id
             uiModel.searchText = ""
         } label: {
             HStack {
-                Image(systemName: "mountain.2.fill")
-                Text(peak.name)
+                Image(systemName: suggestion.icon)
+                Text(suggestion.name)
                 Spacer()
-                Text("\(peak.elevation)m")
+                Text("\(suggestion.elevation)m")
                     .foregroundStyle(.secondary)
             }
             .padding()
@@ -88,12 +88,18 @@ struct PeaksSearchView: View {
 
 // MARK: - Extension
 
-extension PeaksSearchView {
+extension SearchView {
     final class UIModel: ObservableBaseUIModel {
         
         // MARK: - Public Properties
         
         @Published var searchText: String = ""
-        @Published var filteredPeaks: [Peak] = []
+        @Published var filteredSuggestionUIModel: [PeakSearchUIModel] = []
+        
+        let textFieldPlaceholder: String
+        
+        init(textFieldPlaceholder: String) {
+            self.textFieldPlaceholder = textFieldPlaceholder
+        }
     }
 }

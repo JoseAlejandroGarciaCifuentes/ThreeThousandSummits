@@ -19,7 +19,8 @@ struct PeakInfoViewModule: BaseViewModule {
     
     func viewModels() {
         container.register(PeakInfoView.ViewModel.self) { resolver in
-            PeakInfoView.ViewModel(getPeakInfoUseCase: resolver.resolve())
+            PeakInfoView.ViewModel(getPeakInfoUseCase: resolver.resolve(),
+            peakUIMapper: resolver.resolve())
         }
     }
 }

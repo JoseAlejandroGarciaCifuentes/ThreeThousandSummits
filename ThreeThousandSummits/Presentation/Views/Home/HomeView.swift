@@ -21,7 +21,7 @@ struct HomeView: BaseMainView {
         
             // MARK: - Search Bar
             .overlay(alignment: .top) {
-                PeaksSearchView(uiModel: viewModel.searchViewUIModel, selectedPeak: $viewModel.selectedPeak)
+                SearchView(uiModel: viewModel.searchViewUIModel, selectedId: $viewModel.searchSelectedId)
             }
         
             // MARK: - Refresh Button

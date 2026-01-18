@@ -15,18 +15,25 @@ extension PeakInfoView {
         // UseCases
         private let getPeakInfoUseCase: GetPeakInfoUseCase
         
+        // UIMapper
+        private let peakUIMapper: PeakUIMapper
+        
         
         // MARK: - Init
         
-        init(getPeakInfoUseCase: GetPeakInfoUseCase) {
+        init(getPeakInfoUseCase: GetPeakInfoUseCase,
+             peakUIMapper: PeakUIMapper) {
             self.getPeakInfoUseCase = getPeakInfoUseCase
+            self.peakUIMapper = peakUIMapper
         }
         
         
         // MARK: - Public Properties
         
-        var peak: Peak? = nil
-        @Published var peakInfo: PeakInfo? = nil
+        @Published var peakInfoUIModel: PeakInfoUIModel? = nil
+        
+        
+        // MARK: - Private Properties
         
         private var getPeakInfoTask: Task<Void, Error>?
         
@@ -42,14 +49,13 @@ extension PeakInfoView {
         // MARK: - Setup
         
         func setup(peak: Peak?) {
-            self.peak = peak
-            getPeakInfo()
+            getPeakInfo(with: peak)
         }
         
         
         // MARK: - Private Methods
         
-        private func getPeakInfo() {
+        private func getPeakInfo(with peak: Peak?) {
             guard let peak else { return }
             
             getPeakInfoTask?.cancel()
@@ -60,11 +66,10 @@ extension PeakInfoView {
                     try Task.checkCancellation()
                     
                     await MainActor.run {
-                        self.peakInfo = peakInfo
+                        peakInfoUIModel = peakUIMapper.mapPeakInfoUIModel(from: peakInfo, and: peak)
                     }
                 } catch is CancellationError {
                 } catch {
-                    print(error)
                     // TODO: - Show error
                 }
             }
