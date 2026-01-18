@@ -10,6 +10,11 @@ import Foundation
 
 class ObservableBaseUIModel: BaseUIModel, ObservableObject {}
 
+public protocol Loadable {
+    func showLoading()
+    func hideLoading()
+}
+
 class BaseUIModel: Loadable {
     
     // MARK: - Properties

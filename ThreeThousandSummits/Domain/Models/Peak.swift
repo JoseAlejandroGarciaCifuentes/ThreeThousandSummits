@@ -34,3 +34,10 @@ extension Coordinate {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 }
+
+extension Peak {
+    var wikipediaCacheKey: String? {
+        guard let lang, let wikiName else { return nil }
+        return "\(lang):\(wikiName)"
+    }
+}
