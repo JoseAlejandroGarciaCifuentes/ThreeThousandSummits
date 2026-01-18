@@ -33,5 +33,3 @@ struct PeakUIMapperImpl: PeakUIMapper {
                                       detailNavigationSubject: detailNavigationSubject)
     }
 }
-
-

@@ -86,7 +86,7 @@ struct SearchView: View {
 }
 
 
-// MARK: - Extension
+// MARK: - UIModel
 
 extension SearchView {
     final class UIModel: ObservableBaseUIModel {
@@ -97,6 +97,9 @@ extension SearchView {
         @Published var filteredSuggestionUIModel: [SearchUIModel] = []
         
         let textFieldPlaceholder: String
+        
+        
+        // MARK: - Init
         
         init(textFieldPlaceholder: String) {
             self.textFieldPlaceholder = textFieldPlaceholder

@@ -96,6 +96,7 @@ extension HomeView {
             return peakUIMapper.mapPeakDetailUIModel(from: peak, detailNavigationSubject: detailNavigationSubject)
         }
         
+        
         // MARK: - Private Methods
         
         private func handleEvents() {
@@ -123,8 +124,7 @@ extension HomeView {
                     guard let self else { return }
                     let peak = peaks.first { $0.id == peakId }
                     peakForNavigation = peak
-                    selectedPeak = nil
-                    searchSelectedId = nil
+                    reset()
                     DispatchQueue.main.async {
                         self.navigationPath.append(.info)
                     }
@@ -136,6 +136,11 @@ extension HomeView {
         private func updateSearch(with text: String) {
             let filteredPeaks = searchPeaksUseCase.execute(peaks: peaks, query: text)
             searchViewUIModel.filteredSuggestionUIModel = searchUIMapper.mapPeakSearchSuggestionUIModel(from: filteredPeaks)
+        }
+        
+        private func reset() {
+            selectedPeak = nil
+            searchSelectedId = nil
         }
     }
 }

@@ -18,14 +18,7 @@ struct PeakInfoView: BaseMainView {
     // MARK: - Body
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                header
-                Divider()
-                detailInfo
-                Spacer()
-            }
-        }
+        content
         
         // MARK: - Loader
         .loadingOverlay(isLoading: viewModel.isLoading)
@@ -40,6 +33,17 @@ struct PeakInfoView: BaseMainView {
     
     
     // MARK: - Accessory Views
+    
+    private var content: some View {
+        ScrollView {
+            VStack(spacing: 20) {
+                header
+                Divider()
+                detailInfo
+                Spacer()
+            }
+        }
+    }
     
     private var header: some View {
         VStack(spacing: 20) {

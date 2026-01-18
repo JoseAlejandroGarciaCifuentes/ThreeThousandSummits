@@ -7,7 +7,7 @@
 
 import Swinject
 
-class ViewModule {
+final class ViewModule {
     
     static func setup(with container: Container) {
         Container.loggingFunction = .none
@@ -25,7 +25,6 @@ class ViewModule {
     }
     
 }
-
 
 
 // MARK: - Base ViewModule registration

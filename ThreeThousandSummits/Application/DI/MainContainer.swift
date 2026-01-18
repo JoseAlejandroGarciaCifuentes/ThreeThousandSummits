@@ -7,7 +7,7 @@
 
 import Swinject
 
-class MainContainer {
+final class MainContainer {
     
     // MARK: - Shared MainContainer
     
@@ -81,7 +81,6 @@ extension Resolver {
         return service
     }
 }
-
 
 
 // MARK: - Injection Property Wrapper
