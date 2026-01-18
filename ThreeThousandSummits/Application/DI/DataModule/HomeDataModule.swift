@@ -20,25 +20,34 @@ struct HomeDataModule: BaseDataModule {
         container.register(GetPeaksUseCase.self) { resolver in
             GetPeaksUseCaseImpl(peaksRepository: resolver.resolve())
         }
+        
+        container.register(SearchPeaksUseCase.self) { resolver in
+            SearchPeaksUseCaseImpl()
+        }
     }
     
     func repositories() {
         container.register(PeaksRepository.self) { resolver in
             PeaksRepositoryImpl(networkClient: resolver.resolve(),
                                 peakDataMapper: resolver.resolve(),
-                                peakLocalProvider: resolver.resolve())
+                                peakLocalProvider: resolver.resolve(),
+                                peakInfoLocalProvider: resolver.resolve())
         }
     }
     
     func dataMappers() {
         container.register(PeakDataMapper.self) { resolver in
-            PeakDataMapper()
+            PeakDataMapperImpl()
         }
     }
     
     func providers() {
         container.register(PeakLocalProvider.self) { resolver in
             PeakLocalProviderImpl(peaksUserDefaults: resolver.resolve())
+        }.inObjectScope(.container)
+        
+        container.register(PeakInfoLocalProvider.self) { resolver in
+            PeakInfoLocalProviderImpl()
         }.inObjectScope(.container)
     }
 }

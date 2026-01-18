@@ -10,6 +10,11 @@ import Foundation
 
 class ObservableBaseUIModel: BaseUIModel, ObservableObject {}
 
+public protocol Loadable {
+    func showLoading()
+    func hideLoading()
+}
+
 class BaseUIModel: Loadable {
     
     // MARK: - Properties
@@ -30,7 +35,6 @@ class BaseUIModel: Loadable {
     
     // MARK: - Lifecycle
     
-    open func onFirstAppear() {}
     open func onAppear() {}
     open func onDisappear() {}
     

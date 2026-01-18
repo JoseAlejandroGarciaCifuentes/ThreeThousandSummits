@@ -6,7 +6,7 @@
 //
 
 protocol GetPeaksUseCase {
-    func execute() async throws -> [Peak]
+    func execute(forceUpdate: Bool) async throws -> [Peak]
 }
 
 struct GetPeaksUseCaseImpl: GetPeaksUseCase {
@@ -18,8 +18,8 @@ struct GetPeaksUseCaseImpl: GetPeaksUseCase {
     
     // MARK: - Implementation
     
-    func execute() async throws -> [Peak] {
-        return try await peaksRepository.getPeaks()
+    func execute(forceUpdate: Bool) async throws -> [Peak] {
+        return try await peaksRepository.getPeaks(forceUpdate: forceUpdate)
     }
     
 }

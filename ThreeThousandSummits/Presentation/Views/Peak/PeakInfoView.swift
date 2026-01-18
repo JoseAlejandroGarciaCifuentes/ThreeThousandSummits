@@ -6,45 +6,72 @@
 //
 
 import SwiftUI
-import CoreLocation
+import Kingfisher
 
-struct PeakInfoView: View {
-    let peak: Peak?
+struct PeakInfoView: BaseMainView {
+    
+    // MARK: - Public Properties
+    
+    @ObservedObject var viewModel: Self.ViewModel
+    
 
+    // MARK: - Body
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                Image(systemName: "mountain.2.circle.fill")
-                    .font(.system(size: 80))
-                    .foregroundStyle(.blue)
-
-                Text(peak?.name ?? "")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-
-                Text("\(peak?.elevation ?? 0) m")
-                    .font(.title3)
-                    .foregroundStyle(.secondary)
-
+                header
                 Divider()
-
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("About this peak")
-                        .font(.headline)
-
-                    Text("""
-                    \(peak?.name ?? "") is one of the most notable peaks in the Pyrenees. 
-                    Located at coordinates \(peak?.coordinate.latitude ?? 0), \(peak?.coordinate.longitude ?? 0),
-                    it offers stunning views and is a popular destination for mountaineers.
-                    """)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-
+                detailInfo
                 Spacer()
             }
-            .padding()
         }
+        
+        // MARK: - Loader
+        .loadingOverlay(isLoading: viewModel.isLoading)
+        
+        // MARK: - NavBar
         .navigationTitle("Peak Info")
         .navigationBarTitleDisplayMode(.inline)
+        
+        // MARK: - LifeCyle
+        .lifecycle(on: viewModel)
+    }
+    
+    
+    // MARK: - Accessory Views
+    
+    private var header: some View {
+        VStack(spacing: 20) {
+            if let url = viewModel.peakInfoUIModel?.imageUrl {
+                KFImage(url)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 220)
+                    .containerRelativeFrame(.horizontal)
+                    .clipped()
+            }
+            
+            Text(viewModel.peakInfoUIModel?.name ?? "")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding(.horizontal)
+                .multilineTextAlignment(.center)
+            
+            Text("\(viewModel.peakInfoUIModel?.elevation ?? 0) m")
+                .font(.title3)
+                .foregroundStyle(.secondary)
+        }
+    }
+    
+    private var detailInfo: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("About this peak")
+                .font(.headline)
+
+            Text(viewModel.peakInfoUIModel?.description ?? "")
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal)
     }
 }

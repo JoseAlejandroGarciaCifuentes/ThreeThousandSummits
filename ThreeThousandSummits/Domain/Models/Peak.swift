@@ -12,6 +12,8 @@ struct Peak: Identifiable, Hashable, Codable, Sendable {
     let name: String
     let elevation: Int
     let coordinate: Coordinate
+    let lang: String?
+    let wikiName: String?
     
     static func == (lhs: Peak, rhs: Peak) -> Bool {
         lhs.id == rhs.id
@@ -30,5 +32,12 @@ struct Coordinate: Hashable, Codable, Sendable {
 extension Coordinate {
     var clLocationCoordinate: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+}
+
+extension Peak {
+    var wikipediaCacheKey: String? {
+        guard let lang, let wikiName else { return nil }
+        return "\(lang):\(wikiName)"
     }
 }

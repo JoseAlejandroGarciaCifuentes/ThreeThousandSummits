@@ -6,5 +6,6 @@
 //
 
 protocol PeaksRepository {
-    func getPeaks() async throws -> [Peak]
+    func getPeaks(forceUpdate: Bool) async throws -> [Peak]
+    func getPeakInfo(for peak: Peak) async throws -> PeakInfo?
 }
