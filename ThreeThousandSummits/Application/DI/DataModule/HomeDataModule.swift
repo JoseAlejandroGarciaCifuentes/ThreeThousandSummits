@@ -33,7 +33,7 @@ struct HomeDataModule: BaseDataModule {
     
     func dataMappers() {
         container.register(PeakDataMapper.self) { resolver in
-            PeakDataMapper()
+            PeakDataMapperImpl()
         }
     }
     

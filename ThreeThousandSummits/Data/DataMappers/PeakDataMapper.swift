@@ -7,7 +7,12 @@
 
 import CoreLocation
 
-final class PeakDataMapper {
+protocol PeakDataMapper {
+    func mapPeaks(from response: OverpassDTO) -> [Peak]
+    func mapPeakInfo(from response: WikipediaDTO) -> PeakInfo?
+}
+
+final class PeakDataMapperImpl: PeakDataMapper {
     
     func mapPeaks(from response: OverpassDTO) -> [Peak] {
         return response.elements?.compactMap { mapEntity(from: $0) } ?? []
@@ -28,9 +33,9 @@ final class PeakDataMapper {
         guard let id = response.id,
               let name = response.tags?.name,
               let ele = response.tags?.ele,
-            let elevation = Int(ele.filter(\.isNumber)),
-            let latitude = response.lat,
-            let longitude = response.lon,
+              let elevation = Int(ele.filter(\.isNumber)),
+              let latitude = response.lat,
+              let longitude = response.lon,
               let wikipedia = response.tags?.wikipedia
         else { return nil }
         
@@ -38,16 +43,12 @@ final class PeakDataMapper {
         let lang = wikipediaInfoSplitted.first
         let wikiName = wikipediaInfoSplitted[safe: 1]
         
-        return Peak(
-            id: id,
-            name: name,
-            elevation: elevation,
-            coordinate: .init(
-                latitude: latitude,
-                longitude: longitude
-            ),
-            lang: lang,
-            wikiName: wikiName)
+        return Peak(id: id,
+                    name: name,
+                    elevation: elevation,
+                    coordinate: .init(latitude: latitude, longitude: longitude),
+                    lang: lang,
+                    wikiName: wikiName)
     }
 }
 
