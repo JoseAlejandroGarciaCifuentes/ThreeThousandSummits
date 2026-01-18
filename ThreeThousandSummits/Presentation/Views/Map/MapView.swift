@@ -18,12 +18,8 @@ struct MapView: View {
     // MARK: - Private Properties
     
     // Coordinates set to Pyrinees mountain range
-    @State private var cameraPosition: MapCameraPosition = .region(
-        MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 42.7, longitude: 0.7),
-            span: MKCoordinateSpan(latitudeDelta: 1.2, longitudeDelta: 3.5)
-        )
-    )
+    @State private var cameraPosition: MapCameraPosition = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 42.7, longitude: 0.7),
+                                                                                      span: MKCoordinateSpan(latitudeDelta: 1.2, longitudeDelta: 3.5)))
 
     @Binding var selectedPeak: Peak?
     
@@ -67,10 +63,8 @@ struct MapView: View {
     private func focus(on peak: Peak) {
         withAnimation(.easeInOut) {
             cameraPosition = .region(
-                MKCoordinateRegion(
-                    center: peak.coordinate.clLocationCoordinate,
-                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1) // 0.1 represents zoom
-                )
+                MKCoordinateRegion(center: peak.coordinate.clLocationCoordinate,
+                                   span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)) // 0.1 represents zoom
             )
         }
     }

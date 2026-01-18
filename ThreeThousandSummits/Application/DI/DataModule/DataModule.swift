@@ -7,7 +7,7 @@
 
 import Swinject
 
-class DataModule {
+final class DataModule {
     
     static func setup(with container: Container) {
         let modules: [BaseDataModule.Type] = [
@@ -34,13 +34,11 @@ private extension BaseDataModule {
     
     func register() {
         // Data
-        singletons()
         dataMappers()
         providers()
         repositories()
         
         // Domain
-        entityMappers()
         useCases()
     }
     

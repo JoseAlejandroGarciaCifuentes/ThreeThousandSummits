@@ -10,7 +10,7 @@ protocol SearchUIMapper {
     func map(_ peak: Peak) -> SearchUIModel
 }
 
-class SearchUIMapperImpl: SearchUIMapper {
+final class SearchUIMapperImpl: SearchUIMapper {
     
     func mapPeakSearchSuggestionUIModel(from peaks: [Peak]) -> [SearchUIModel] {
         return peaks.compactMap(map)

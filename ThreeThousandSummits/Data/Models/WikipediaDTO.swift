@@ -5,8 +5,6 @@
 //  Created by Alejandro Personal on 17/1/26.
 //
 
-import Foundation
-
 struct WikipediaDTO: Decodable {
     let query: WikipediaQueryDTO?
 }
