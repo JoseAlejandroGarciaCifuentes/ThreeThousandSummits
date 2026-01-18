@@ -22,6 +22,9 @@ struct HomeView: BaseMainView {
                 PeaksSearchView(uiModel: viewModel.searchViewUIModel, selectedPeak: $viewModel.selectedPeak)
             }
         
+            // MARK: - Loader
+            .loadingOverlay(isLoading: viewModel.isLoading)
+        
             // MARK: - Navigation
             .withAppNavigation(path: $viewModel.navigationPath) { route in
                 switch route {
@@ -44,7 +47,3 @@ struct HomeView: BaseMainView {
         
     }
 }
-
-//#Preview {
-//    HomeView(viewModel: .init())
-//}

@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import CoreLocation
-import Combine
 import Kingfisher
 
 struct PeakInfoView: BaseMainView {
@@ -29,9 +27,15 @@ struct PeakInfoView: BaseMainView {
             }
         }
         
-        //MARK: - NavBar
+        // MARK: - Loader
+        .loadingOverlay(isLoading: viewModel.isLoading)
+        
+        // MARK: - NavBar
         .navigationTitle("Peak Info")
         .navigationBarTitleDisplayMode(.inline)
+        
+        // MARK: - LifeCyle
+        .lifecycle(on: viewModel)
     }
     
     
@@ -69,56 +73,5 @@ struct PeakInfoView: BaseMainView {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal)
-    }
-}
-
-
-extension PeakInfoView {
-    final class ViewModel: BaseViewModel {
-        
-        // MARK: - Dependencies
-        
-        // UseCases
-        private let getPeakInfoUseCase: GetPeakInfoUseCase
-        
-        
-        // MARK: - Init
-        
-        init(getPeakInfoUseCase: GetPeakInfoUseCase) {
-            self.getPeakInfoUseCase = getPeakInfoUseCase
-        }
-        
-        
-        // MARK: - Public Properties
-        
-        var peak: Peak? = nil
-        @Published var peakInfo: PeakInfo? = nil
-        
-        
-        // MARK: - Setup
-        
-        func setup(peak: Peak?) {
-            self.peak = peak
-            getPeakInfo()
-        }
-        
-        
-        // MARK: - Private Methods
-        
-        private func getPeakInfo() {
-            guard let peak else { return }
-            Task {
-                do {
-                    let peakInfo = try await getPeakInfoUseCase.execute(with: peak)
-                    
-                    await MainActor.run {
-                        self.peakInfo = peakInfo
-                    }
-                } catch {
-                    print(error)
-                    // TODO: - Show error
-                }
-            }.store(in: &disposables)
-        }
     }
 }

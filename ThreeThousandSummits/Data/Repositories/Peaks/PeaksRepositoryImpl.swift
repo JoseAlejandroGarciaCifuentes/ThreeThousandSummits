@@ -14,16 +14,19 @@ final class PeaksRepositoryImpl: PeaksRepository {
     private let networkClient: NetworkClient
     private let peakDataMapper: PeakDataMapper
     private let peakLocalProvider: PeakLocalProvider
+    private let peakInfoLocalProvider: PeakInfoLocalProvider
     
     
     // MARK: - Init
     
     init(networkClient: NetworkClient,
          peakDataMapper: PeakDataMapper,
-         peakLocalProvider: PeakLocalProvider) {
+         peakLocalProvider: PeakLocalProvider,
+         peakInfoLocalProvider: PeakInfoLocalProvider) {
         self.networkClient = networkClient
         self.peakDataMapper = peakDataMapper
         self.peakLocalProvider = peakLocalProvider
+        self.peakInfoLocalProvider = peakInfoLocalProvider
     }
     
     
@@ -40,13 +43,10 @@ final class PeaksRepositoryImpl: PeaksRepository {
         
         // Response
         let data = try await networkClient.request(target)
-
-        print(String(data: data, encoding: .utf8) ?? "❌ no utf8")
-
-        let dto = try data.map(OverpassDTO.self)
+            .map(OverpassDTO.self)
         
         // Mapper
-        let peaks = peakDataMapper.mapPeaks(from: dto)
+        let peaks = peakDataMapper.mapPeaks(from: data)
         
         // Save Local
         await peakLocalProvider.set(peaks: peaks)
@@ -55,10 +55,12 @@ final class PeaksRepositoryImpl: PeaksRepository {
     }
     
     func getPeakInfo(for peak: Peak) async throws -> PeakInfo? {
+        guard let cacheKey = peak.wikipediaCacheKey else { return nil }
+        
         // Check Local
-        //if let localPeaks = await peakLocalProvider.getPeaks() {
-        //    return localPeaks
-        //}
+        if let cached = await peakInfoLocalProvider.getPeakInfo(for: cacheKey) {
+            return cached
+        }
         
         guard let lang = peak.lang, let wikiName = peak.wikiName else { return nil }
         
@@ -73,7 +75,9 @@ final class PeaksRepositoryImpl: PeaksRepository {
         let peakInfo = peakDataMapper.mapPeakInfo(from: data)
         
         // Save Local
-        //await peakLocalProvider.set(peaks: peaks)
+        if let peakInfo {
+            await peakInfoLocalProvider.setPeakInfo(peakInfo, for: cacheKey)
+        }
         
         return peakInfo
     }

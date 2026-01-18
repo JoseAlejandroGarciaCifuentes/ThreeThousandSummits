@@ -34,6 +34,8 @@ extension HomeView {
         
         private(set) var searchViewUIModel: PeaksSearchView.UIModel = .init()
         let detailNavigationSubject = PassthroughSubject<Peak, Never>()
+        
+        private var getPeaksTask: Task<Void, Error>?
     
         
         // MARK: - LifeCycle
@@ -41,6 +43,11 @@ extension HomeView {
         override func onAppear() {
             handleEvents()
             getPeaks()
+        }
+        
+        @MainActor
+        deinit {
+            getPeaksTask?.cancel()
         }
         
         
@@ -72,18 +79,22 @@ extension HomeView {
         }
         
         private func getPeaks() {
-            Task {
+            getPeaksTask?.cancel()
+            
+            getPeaksTask = Task(loadable: self) {
                 do {
                     let peaks = try await getPeaksUseCase.execute()
+                    try Task.checkCancellation()
                     
                     await MainActor.run {
                         self.peaks = peaks
                     }
+                } catch is CancellationError {
                 } catch {
                     print(error)
                     // TODO: - Show error
                 }
-            }.store(in: &disposables)
+            }
         }
         
         private func updateSearch(with text: String) {
