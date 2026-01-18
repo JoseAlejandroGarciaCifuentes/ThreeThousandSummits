@@ -66,7 +66,7 @@ struct SearchView: View {
         }
     }
     
-    private func suggestionButton(with suggestion: PeakSearchUIModel) -> some View {
+    private func suggestionButton(with suggestion: SearchUIModel) -> some View {
         Button {
             selectedId = suggestion.id
             uiModel.searchText = ""
@@ -94,7 +94,7 @@ extension SearchView {
         // MARK: - Public Properties
         
         @Published var searchText: String = ""
-        @Published var filteredSuggestionUIModel: [PeakSearchUIModel] = []
+        @Published var filteredSuggestionUIModel: [SearchUIModel] = []
         
         let textFieldPlaceholder: String
         

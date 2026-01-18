@@ -28,11 +28,11 @@ struct HomeViewModule: BaseViewModule {
     
     func uiMappers() {
         container.register(PeakUIMapper.self) { resolver in
-            PeakUIMapper()
+            PeakUIMapperImpl()
         }
         
         container.register(SearchUIMapper.self) { resolver in
-            SearchUIMapper()
+            SearchUIMapperImpl()
         }
     }
 }
