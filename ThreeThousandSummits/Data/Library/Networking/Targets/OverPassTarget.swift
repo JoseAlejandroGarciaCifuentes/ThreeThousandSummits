@@ -46,7 +46,7 @@ extension OverpassTarget: NetworkTarget {
                 ["ele"~"^[3][0-9]{3}$"]
                 (42.2,-1.9,43.1,3.3);
             );
-            out body;
+            out tags center;
             """
 
             let bodyString = "data=\(query)"
