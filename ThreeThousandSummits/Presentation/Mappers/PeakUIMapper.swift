@@ -18,6 +18,7 @@ struct PeakUIMapperImpl: PeakUIMapper {
     func mapPeakInfoUIModel(from peakInfo: PeakInfo?, and peak: Peak) -> PeakInfoUIModel? {
         let imageURL = peakInfo?.imageURL
             .flatMap { URL(string: $0.trimmingCharacters(in: .whitespacesAndNewlines)) }
+            .map { normalizedWikimediaURL(from: $0) }
         
         return PeakInfoUIModel(name: peak.name, elevation: peak.elevation, description: peakInfo?.description, imageUrl: imageURL)
     }
@@ -31,5 +32,32 @@ struct PeakUIMapperImpl: PeakUIMapper {
                                       elevation: peak.elevation,
                                       coordinates: formattedCoordinates,
                                       detailNavigationSubject: detailNavigationSubject)
+    }
+    
+    
+    // MARK: - Private Methods
+
+    private func normalizedWikimediaURL(from url: URL) -> URL {
+        let absolute = url.absoluteString
+
+        guard absolute.contains("upload.wikimedia.org/wikipedia/commons"),
+              !absolute.contains("/thumb/") else {
+            return url
+        }
+
+        let fileName = url.lastPathComponent
+
+        let encodedFileName =
+            fileName.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+            ?? fileName
+
+        let thumbURLString =
+            absolute
+                .replacingOccurrences(
+                    of: "/wikipedia/commons/",
+                    with: "/wikipedia/commons/thumb/"
+                ) + "/1024px-\(encodedFileName)"
+
+        return URL(string: thumbURLString) ?? url
     }
 }
