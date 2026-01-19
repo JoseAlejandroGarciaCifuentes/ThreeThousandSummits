@@ -25,6 +25,14 @@ La query:
 
 Dado que Overpass es una API comunitaria con una disponibilidad variable, el proyecto implementa mecanismos explícitos de cache, cancelación y reintento.
 
+⚠️ **Nota importante sobre Overpass API**
+ 
+Durante el desarrollo se han observado **timeouts frecuentes y fallos intermitentes**, especialmente en consultas amplias o en horas de alta carga.
+
+Por este motivo, la aplicación:
+- Muestra un **alert de error** cuando la petición falla
+- Permite al usuario **reintentar manualmente** la operación
+
 ---
 
 ### Wikipedia API / Wikimedia Commons
@@ -149,4 +157,6 @@ Los tests están escritos usando el nuevo framework **Testing** y evitan depende
 
 ## ℹ️ Notas finales
 
-El foco del proyecto está en la **robustez**, **testabilidad** y **separación de responsabilidades**, priorizando estos aspectos frente a la complejidad visual o animaciones.
+El foco del proyecto está en la **robustez**, **testabilidad** y **separación de responsabilidades**, priorizando estos aspectos frente a la complejidad visual o animaciones, espero que cumpla con las espectativas previstas. 
+
+**Muchas gracias** por dedicar tiempo a revisar el proyecto. He aprovechado la oportunidad para desarrollar una aplicación alineada con uno de mis intereses personales, la montaña, y en particular la cordillera de los Pirineos.
