@@ -35,12 +35,14 @@ struct PeakInfoView: BaseMainView {
     // MARK: - Accessory Views
     
     private var content: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                header
-                Divider()
-                detailInfo
-                Spacer()
+        GeometryReader { geo in
+            ScrollView {
+                VStack(spacing: 20) {
+                    header
+                    Divider()
+                    detailInfo
+                }
+                .frame(width: geo.size.width)
             }
         }
     }
@@ -51,8 +53,8 @@ struct PeakInfoView: BaseMainView {
                 KFImage(url)
                     .resizable()
                     .scaledToFill()
+                    .frame(maxWidth: .infinity)
                     .frame(height: 220)
-                    .containerRelativeFrame(.horizontal)
                     .clipped()
             }
             
