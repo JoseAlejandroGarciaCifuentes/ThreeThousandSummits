@@ -38,7 +38,7 @@ struct PeakInfoView: BaseMainView {
         GeometryReader { geo in
             ScrollView {
                 VStack(spacing: 20) {
-                    header
+                    header(width: geo.size.width)
                     Divider()
                     detailInfo
                 }
@@ -47,16 +47,9 @@ struct PeakInfoView: BaseMainView {
         }
     }
     
-    private var header: some View {
+    private func header(width: CGFloat) -> some View {
         VStack(spacing: 20) {
-            if let url = viewModel.peakInfoUIModel?.imageUrl {
-                KFImage(url)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 220)
-                    .clipped()
-            }
+            peakImage(width: width)
             
             Text(viewModel.peakInfoUIModel?.name ?? "")
                 .font(.largeTitle)
@@ -67,6 +60,36 @@ struct PeakInfoView: BaseMainView {
             Text("\(viewModel.peakInfoUIModel?.elevation ?? 0) m")
                 .font(.title3)
                 .foregroundStyle(.secondary)
+        }
+    }
+    
+    @ViewBuilder private func peakImage(width: CGFloat) -> some View {
+        if let url = viewModel.peakInfoUIModel?.imageUrl {
+            KFImage.url(url)
+                .downsampling(size: .init(width: width, height: 220))
+                .resizable()
+                .cacheMemoryOnly()
+                .placeholder {
+                    placeholderImage
+                }
+                .scaledToFill()
+                .frame(maxWidth: .infinity)
+                .frame(height: 220)
+                .clipped()
+        } else {
+           placeholderImage
+                .frame(maxWidth: .infinity)
+                .frame(height: 220)
+        }
+    }
+    
+    private var placeholderImage: some View {
+        ZStack {
+            Color.gray.opacity(0.15)
+            
+            Image(systemName: "mountain.2.circle.fill")
+                .font(.system(size: 80))
+                .foregroundStyle(.blue)
         }
     }
     
